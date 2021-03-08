@@ -1,0 +1,44 @@
+replicaCount: 1
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: ""
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount:
+  create: true
+  annotations: {
+    "eks.amazonaws.com/role-arn": "arn:aws:iam::540137478950:instance-profile/eks-suhyun-test"
+  }
+  name: "eks-suhyun-test"
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations: {
+    "alb.ingress.kubernetes.io/scheme": "internet-facing",
+    "alb.ingress.kubernetes.io/target-type": "ip",
+    "kubernetes.io/ingress.class": "alb"
+  }
+  hosts:
+    - host: suhyun-test-02.meshdev.io
+      paths: [{"path":"/"}]
+  tls: []
+resources: {}
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
